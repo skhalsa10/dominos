@@ -21,4 +21,3 @@ public class GUIMain extends Application {
         launch(args);
     }
 }
-54
