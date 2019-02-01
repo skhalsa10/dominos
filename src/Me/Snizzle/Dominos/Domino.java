@@ -1,12 +1,25 @@
 package Me.Snizzle.Dominos;
 
-public class Domino {
-    private final int left;
-    private final int right;
 
+public class Domino {
+    private int left;
+    private int right;
+
+    /**
+     * constructs a new Domino eith a left and right value for each side of the domino. this domino game is basic
+     * so the domino is only in a horizontal position.
+     * @param left this is set to the left side.
+     * @param right this is set to the right side.
+     */
     public Domino(int left, int right){
         this.left = left;
         this.right = right;
+    }
+
+    public void rotate(){
+        int tmp = this.left;
+        this.left = right;
+        this.right = tmp;
     }
 
 
@@ -23,7 +36,7 @@ public class Domino {
         }
 
         //instance check
-        if(!(o instanceof Domino){
+        if(!(o instanceof Domino)){
             return false;
         }
 
@@ -39,7 +52,7 @@ public class Domino {
         int prime = 31;
         int result = 1;
 
-        return prime* (result +left +right);
+        return prime* (result+left+right);
     }
 
 
