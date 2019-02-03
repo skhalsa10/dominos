@@ -1,4 +1,10 @@
 package Me.Snizzle.Dominos.Renderers;
 
-public class FXRenderer {
+import Me.Snizzle.Dominos.Renderer;
+
+public class FXRenderer implements Renderer {
+    @Override
+    public void render() {
+
+    }
 }

@@ -16,6 +16,15 @@ public class Domino {
         this.right = right;
     }
 
+    /**
+     * this method will swap the left and right values... essentially rotating it 180 degrees.
+     * this works for this game because the dominos can only be horizontal.
+     *
+     * IM SERIOUSLY CONSIDERING CONVERTING THE LEFT AND RIGHT FIELDS TO FINAL TO ENFORCE THE IDEA OF ENCAPSULATION
+     * I CAN IMPLEMENT A ROTATE WITH A BOOLEAN THAT CHANGES RETURN LOGIC. IT IS ALL CONTROLLED IN THE CLASS.
+     * NO ONE ELSE WOULD REALLY KNOW WHAT I AM DOING. I THINK THE RISK OF LEAVING AS IS is minimal though and easier to understand.
+     *
+     */
     public void rotate(){
         int tmp = this.left;
         this.left = right;
@@ -55,5 +64,27 @@ public class Domino {
         return prime* (result+left+right);
     }
 
+    /**
+     * I hesitate to put this in here as getters and setter violate encapsulation that we attempt to enforce
+     * in OOD. but the risk is generally minimal here. I may come back and change logic but this method will be used either way.
+     *
+     * I made the name seem more like behavior compared to an accessor.
+     *
+     * @return the right side integer representation of the domino.
+     */
+    public int checkRight() {
+        return this.right;
+    }
 
+    /**
+     * I hesitate to put this in here as getters and setter violate encapsulation that we attempt to enforce
+     * in OOD. but the risk is generally minimal here. I may come back and change logic but this method will be used either way
+     *
+     * I made the name seem more like behavior compared to an accessor.
+     *
+     * @return the right side integer representation of the domino.
+     */
+    public int checkLeft() {
+        return this.left;
+    }
 }

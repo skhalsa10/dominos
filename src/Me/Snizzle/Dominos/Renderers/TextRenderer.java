@@ -1,4 +1,10 @@
 package Me.Snizzle.Dominos.Renderers;
 
-public class TextRenderer {
+import Me.Snizzle.Dominos.Renderer;
+
+public class TextRenderer implements Renderer {
+    @Override
+    public void render() {
+
+    }
 }

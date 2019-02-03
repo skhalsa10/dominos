@@ -24,10 +24,16 @@ public class Hand {
     }
 
 
-    //either need a hashcode or index to use to pull domino. probably should not do hashcode as this can map to more than one domino
+    /**
+     * The index parameter must be in terms of the array list. this may cause issues for a graphics version.
+     * This means other logic is converting graphics  xy into an index usable in this method.
+     *
+     * @param index index of domino to remove
+     * @return removed domino
+     */
     public Domino remove(int index){
-        //TODO
-        return null;
+
+        return hand.remove(index);
     }
 
     /**
