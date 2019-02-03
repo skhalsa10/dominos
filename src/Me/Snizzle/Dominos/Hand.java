@@ -43,4 +43,10 @@ public class Hand {
     public boolean isEmpty(){
         return hand.isEmpty();
     }
+
+
+    public Domino[] toArray(){
+        Domino[] output = new Domino[hand.size()];
+        return hand.toArray(output);
+    }
 }

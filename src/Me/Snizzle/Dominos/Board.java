@@ -11,8 +11,9 @@ import java.util.Deque;
  */
 public class Board {
 
+
     public enum Side { LEFT, RIGHT  }
-    public static enum Row { TOP, BOTTOM }
+    public enum Row { TOP, BOTTOM }
 
     private boolean topRightExtends;
     private boolean topLeftExtends;
@@ -142,6 +143,32 @@ public class Board {
      */
     public int peekBottomRight(){
         return bottomRow.peekLast().checkRight();
+    }
+
+    /**
+     * this checks to see if the top left extends
+     * @return true if the left side of the top row should display extended if it were to be drawn
+     */
+    public boolean topRowPosition() {
+        return topLeftExtends;
+    }
+
+    /**
+     *
+     * @return Domino[] representing the top row.
+     */
+    public Domino[] topRowToArray(){
+        Domino[] output = new Domino[topRow.size()];
+        return topRow.toArray(output);
+    }
+
+    /**
+     *
+     * @return Domino[] representing the bottom row.
+     */
+    public Domino[] bottomRowToArray(){
+        Domino[] output = new Domino[bottomRow.size()];
+        return bottomRow.toArray(output);
     }
 
 
