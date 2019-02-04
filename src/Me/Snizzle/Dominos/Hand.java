@@ -49,4 +49,8 @@ public class Hand {
         Domino[] output = new Domino[hand.size()];
         return hand.toArray(output);
     }
+
+    public void rotate(int handI) {
+        hand.get(handI).rotate();
+    }
 }

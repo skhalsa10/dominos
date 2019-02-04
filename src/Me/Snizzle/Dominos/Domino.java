@@ -87,4 +87,16 @@ public class Domino {
     public int checkLeft() {
         return this.left;
     }
+
+    /**
+     *
+     * @return this returns a text representation of a Domino in an ASCII art form
+     */
+    @Override
+    public String toString() {
+        String out = " __ __ \n" +
+                     "|"+ this.left + " | " + this.right + "|\n" +
+                     "`~~'~~'";
+        return out;
+    }
 }

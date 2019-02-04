@@ -9,17 +9,28 @@ public class GameLoop {
     private DominoGame gameLogic;
     private DominoGameRenderer gameRenderer;
 
+    /**
+     * initialized the gameloop with a renderer and a Domino Game
+     * @param logic the DominoGame instance
+     * @param renderer
+     */
     public GameLoop(DominoGame logic, DominoGameRenderer renderer){
         this.gameLogic = logic;
         this.gameRenderer = renderer;
     }
 
+    /**
+     * this will loop until the game is over
+     */
     public void loop(){
-        //take a step through the state(this should allow for animation later. I can simulate my own 60 frames per second loop.
-        gameLogic.step();
-        //export the current state of the game to the renderer
-        gameLogic.export(gameRenderer);
-        //render it whether it be text or gui... or some other representation in the future that implements the interface
-        gameRenderer.render();
+        while(!gameLogic.isGameOver){
+            //take a step through the state(this should allow for animation later. I can simulate my own 60 frames per second loop.
+            gameLogic.step();
+            //export the current state of the game to the renderer
+            gameLogic.export(gameRenderer);
+            //render it whether it be text or gui... or some other representation in the future that implements the interface
+            gameRenderer.render();
+        }
+
     }
 }
