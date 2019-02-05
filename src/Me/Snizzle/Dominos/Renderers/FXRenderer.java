@@ -18,4 +18,9 @@ public class FXRenderer implements DominoGameRenderer {
     public void displayUserHand(Domino[] userHand) {
 
     }
+
+    @Override
+    public String[] fetchData() {
+        return new String[0];
+    }
 }

@@ -23,13 +23,14 @@ public class GameLoop {
      * this will loop until the game is over
      */
     public void loop(){
-        while(!gameLogic.isGameOver){
-            //take a step through the state(this should allow for animation later. I can simulate my own 60 frames per second loop.
-            gameLogic.step();
+        while(!gameLogic.isGameOver()){
             //export the current state of the game to the renderer
             gameLogic.export(gameRenderer);
             //render it whether it be text or gui... or some other representation in the future that implements the interface
             gameRenderer.render();
+            //take a step through the state(this should allow for animation later. I can simulate my own 60 frames per second loop.
+            gameLogic.step();
+
         }
 
     }

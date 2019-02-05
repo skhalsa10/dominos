@@ -57,6 +57,7 @@ public class TextRenderer implements DominoGameRenderer {
 
     //rendors the user hand. still horrible to understand but it should work to get a grade?
     private void renderUserHand() {
+
         StringBuilder topEdge = new StringBuilder();
         StringBuilder center = new StringBuilder();
         StringBuilder bottomEdge = new StringBuilder();
@@ -133,6 +134,7 @@ public class TextRenderer implements DominoGameRenderer {
         topEdge.append(bottomEdge);
         bottomR = topEdge.toString();
 
+
         System.out.println(topR);
         System.out.println(bottomR);
 
@@ -177,6 +179,7 @@ public class TextRenderer implements DominoGameRenderer {
         boolean valid = false;
         //lets loop until we get a valid move from the user
         while(!valid) {
+            //System.out.println("in the loop");
             printInstructions();
             try {
                 userMoveIn = reader.readLine();
@@ -184,12 +187,20 @@ public class TextRenderer implements DominoGameRenderer {
                 valid = false;
                 e.printStackTrace();
             }
+            //System.out.println(userMoveIn + " - got it!");
             //this parses through all valid  input
             if(userMoveIn != null){
                 userMoveIn.toLowerCase();
                 userMoveOut = userMoveIn.split(" ");
+
+                //System.out.println(userMoveOut.length ==1);
+
                 if(userMoveOut.length == 1){
-                    if(userMoveOut[0] == "draw"){valid = true;}
+                    //System.out.println( );
+                    if(userMoveOut[0].equals("draw")){
+                        valid = true;
+                        //System.out.println("length 1 - " + userMoveOut[0]);
+                    }
                 }
                 if(userMoveOut.length == 3 || userMoveOut.length == 4){
                     //lets assume true;
@@ -198,13 +209,13 @@ public class TextRenderer implements DominoGameRenderer {
                         if (!(Integer.parseInt(userMoveOut[0])<userHand.length)){
                             valid = false;
                         }
-                        if(!(userMoveOut[1] == "top" ||userMoveOut[1] == "bottom")){
+                        if(!(userMoveOut[1].equals("top") ||userMoveOut[1].equals("bottom"))){
                             valid = false;
                         }
-                        if(!(userMoveOut[2] == "left" ||userMoveOut[1] == "right")){
+                        if(!(userMoveOut[2].equals("left") ||userMoveOut[2].equals("right"))){
                             valid = false;
                         }
-                        if(userMoveOut.length == 4 && userMoveOut[3] != "rotate"){
+                        if(userMoveOut.length == 4 && !(userMoveOut[3].equals("rotate"))){
                             valid = false;
                         }
                     }catch(NumberFormatException e){

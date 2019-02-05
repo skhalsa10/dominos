@@ -6,6 +6,11 @@ public class Player {
     private Board board;
 
 
+    /**
+     * constructs a new player
+     * @param boneyard the boneyard reference
+     * @param board the board reference
+     */
     public Player(Boneyard boneyard, Board board){
         this.board = board;
         this.boneyard = boneyard;
@@ -55,12 +60,14 @@ public class Player {
      * @return true on success false on  failure
      */
     public boolean  playHand(String[] move){
+
         int handI;
         Board.Side side = null;
         Board.Row row = null;
         Domino piece;
         //confirm valid array size
-        if(move.length != 3 || move.length != 4){return false;}
+
+        if(move.length != 3 && move.length != 4){return false;}
 
         //try to parse the first element which should be an int. if it fails use this time to return false
         try{
@@ -69,28 +76,30 @@ public class Player {
             e.printStackTrace();
             return false;
         }
+
         //the second element can be top or bottom set state accordingly
-        if(move[1] == "top"){
+        if(move[1].equals("top")){
             row = Board.Row.TOP;
-        }else if(move[1] == "bottom"){
+        }else if(move[1].equals("bottom")){
             row = Board.Row.BOTTOM;
         }else{
             return false;
         }
         //the third element can be left or right set state accordingly
-        if(move[2] == "left"){
+        if(move[2].equals("left")){
             side = Board.Side.LEFT;
-        }else if(move[2] == "right"){
+        }else if(move[2].equals("right")){
             side = Board.Side.RIGHT;
         }else {
             return false;
         }
         //rotate if necessary
-        if(move.length == 4 && move[3] == "rotate"){ hand.rotate(handI);}
+        if(move.length == 4 && move[3].equals("rotate")){ hand.rotate(handI);}
 
         //load piece to a local variable (locality principle can increase performance not by much though)
         piece = hand.remove(handI);
 
+        System.out.println(board.checkValid(side,row,piece));
         //add piece to the board if it is a legal move
         if(!board.add(side,row,piece)){
             hand.add(piece);

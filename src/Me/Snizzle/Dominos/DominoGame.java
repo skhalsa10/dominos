@@ -2,7 +2,7 @@ package Me.Snizzle.Dominos;
 
 public class DominoGame  implements Logic{
 
-    public boolean isGameOver;
+    private boolean isGameOver;
     private Player user;
     private Player computer;
     private Board board;
@@ -10,13 +10,16 @@ public class DominoGame  implements Logic{
     private boolean isUserTurn;
     private Importer importer;
 
+    /**
+     * contstructs a new DominoGame with default state
+     * @param importer the importer that feeds user state back into the dominogame.
+     */
     public DominoGame(Importer importer){
         this.importer = importer;
         board = new Board();
         boneyard = new Boneyard(6);
         user = new Player(boneyard, board);
         computer = new Player(boneyard, board);
-        board = new Board();
         isUserTurn = true;
         isGameOver = false;
     }
@@ -30,17 +33,36 @@ public class DominoGame  implements Logic{
         display.displayUserHand(user.handToArray());
     }
 
+    /**
+     *
+     * @return returns true if game is over.
+     */
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    /**
+     * defines an importer that this DominoGame uses to pull data from the interface which is either a text
+     * or a gui
+     */
     public interface Importer {
         String[] fetchData();
     }
 
 
-
+    /**
+     * this defines an interface to export state from this data structure
+     */
     public interface Exporter {
         void displayBoard(boolean topLeftExtends, Domino[] top, Domino[] bottom);
         void displayUserHand(Domino[] userHand);
     }
 
+    /**
+     * this method takes a step through the state.  in this case it collects data from the importer
+     * and processes it if it is the user's turn.... if it is the computers turn  than the computer will run an algorithm
+     *
+     */
     @Override
     public void step() {
 
@@ -48,7 +70,7 @@ public class DominoGame  implements Logic{
             //lets import the user move
             String[] move = importer.fetchData();
             //if the user draws from the boneyard and it is empty then they lose
-            if(move.length == 1 && move[0] == "draw"){
+            if(move.length == 1 && move[0].equals("draw")){
                 if(!user.drawFromBoneyard()){
                     isGameOver = true;
                 }
@@ -60,6 +82,7 @@ public class DominoGame  implements Logic{
                 isUserTurn = false;
             }
         }else{
+            isUserTurn = true;
             //we are now in the computers move
             computer.playCompHand();
         }

@@ -59,7 +59,7 @@ public class Board {
                 topRightExtends = true;
                 bottomRightExtends = false;
             }
-            if(side == Side.RIGHT && row == Row.TOP){
+            if(side == Side.RIGHT && row == Row.BOTTOM){
                 bottomRow.addLast(piece);
                 bottomRightExtends = true;
                 topRightExtends = false;
@@ -72,7 +72,8 @@ public class Board {
     }
 
     //this checks the validity of a requested move...I could break this out into more private methods...but I dont want to
-    private boolean checkValid(Side side , Row row, Domino piece){
+    //TODO need to add checks for the wild card of 0
+    public boolean checkValid(Side side , Row row, Domino piece){
         //lets take care of the edge cases first
         if(topRow.isEmpty() && bottomRow.isEmpty()){
             return true;
@@ -159,7 +160,8 @@ public class Board {
      */
     public Domino[] topRowToArray(){
         Domino[] output = new Domino[topRow.size()];
-        return topRow.toArray(output);
+        topRow.toArray(output);
+        return output;
     }
 
     /**
