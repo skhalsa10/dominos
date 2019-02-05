@@ -47,8 +47,7 @@ public class TextRenderer implements DominoGameRenderer {
      * this prints instructions on how to give commands
      */
     private void printInstructions() {
-        System.out.println("\n\nPlease Respond with your move it the following formats are accepted rotate implies the " +
-                            "piece must be rotated before placed it is optional.:\n"
+        System.out.println("\n\nPlease Respond with your move it the following formats:\n"
                             + "[draw]\n"
                             + "or\n"
                             + "[index] [top|bottom] [left|right] [rotate (optional)]");
@@ -82,6 +81,7 @@ public class TextRenderer implements DominoGameRenderer {
         topEdge.append(indices);
         hand = topEdge.toString();
 
+        System.out.println("_____________________YOUR_HAND___________________");
         System.out.println(hand);
 
     }
@@ -135,6 +135,7 @@ public class TextRenderer implements DominoGameRenderer {
         bottomR = topEdge.toString();
 
 
+        System.out.println("_____________________BOARD___________________");
         System.out.println(topR);
         System.out.println(bottomR);
 

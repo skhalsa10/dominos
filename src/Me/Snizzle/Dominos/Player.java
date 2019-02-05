@@ -110,7 +110,7 @@ public class Player {
 
     /**
      * if the player happens to be a computer
-     * @return
+     * @return true
      */
     public boolean playCompHand(){
         return false;

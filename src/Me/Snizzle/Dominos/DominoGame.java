@@ -84,7 +84,7 @@ public class DominoGame  implements Logic{
         }else{
             isUserTurn = true;
             //we are now in the computers move
-            computer.playCompHand();
+            isGameOver = !(computer.playCompHand());
         }
 
     }

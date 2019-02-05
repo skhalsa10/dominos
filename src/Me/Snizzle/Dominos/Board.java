@@ -43,26 +43,36 @@ public class Board {
      * @param piece  the domino we are attempting to add
      */
     public boolean add(Side side , Row row, Domino piece){
+        boolean isFirstPiece = false;
         if (checkValid(side, row, piece)){
+            if (topRow.size() ==0 && bottomRow.size() ==0){isFirstPiece = true;}
             if(side == Side.LEFT && row == Row.TOP){
                 topRow.addFirst(piece);
                 topLeftExtends = true;
+                if(isFirstPiece){ topRightExtends = true;}
                 bottomLeftExtends = false;
+                if(isFirstPiece){ bottomRightExtends = false;}
             }
             if(side == Side.LEFT && row == Row.BOTTOM){
                 bottomRow.addFirst(piece);
                 bottomLeftExtends = true;
+                if(isFirstPiece){bottomRightExtends = true;}
                 topLeftExtends = false;
+                if(isFirstPiece){topRightExtends = false;}
             }
             if(side == Side.RIGHT && row == Row.TOP){
                 topRow.addLast(piece);
+                if(isFirstPiece){topLeftExtends = true;}
                 topRightExtends = true;
                 bottomRightExtends = false;
+                if(isFirstPiece){bottomLeftExtends = false;}
             }
             if(side == Side.RIGHT && row == Row.BOTTOM){
                 bottomRow.addLast(piece);
+                if(isFirstPiece){bottomLeftExtends = true;}
                 bottomRightExtends = true;
                 topRightExtends = false;
+                if(isFirstPiece){topLeftExtends = false;}
             }
             return true;
         }else{
@@ -82,28 +92,44 @@ public class Board {
         //check top left
         if(side == Side.LEFT && row == Row.TOP){
             if(!topLeftExtends){
-                return (peekBottomLeft() == piece.checkRight());
+                if(piece.checkRight() == 0 || peekBottomLeft() == 0){
+                    return true;
+                }else {
+                    return (peekBottomLeft() == piece.checkRight());
+                }
             }
         }
 
         //check bottom left
         if(side == Side.LEFT && row == Row.BOTTOM){
             if(!bottomLeftExtends){
-                return (peekTopLeft() == piece.checkRight());
+                if(piece.checkRight() == 0 || peekTopLeft() == 0){
+                    return true;
+                }else {
+                    return (peekTopLeft() == piece.checkRight());
+                }
             }
         }
 
         //check top right
         if(side == Side.RIGHT && row == Row.TOP){
             if(!topRightExtends){
-                return (peekBottomRight() == piece.checkLeft());
+                if(piece.checkLeft() == 0 || peekBottomRight() == 0){
+                    return true;
+                }else {
+                    return (peekBottomRight() == piece.checkLeft());
+                }
             }
         }
 
         //check bottom right
         if(side == Side.RIGHT && row == Row.BOTTOM){
             if(!bottomRightExtends){
-                return (peekTopRight() == piece.checkLeft());
+                if(piece.checkLeft() == 0 || peekTopRight() == 0){
+                    return true;
+                }else {
+                    return (peekTopRight() == piece.checkLeft());
+                }
             }
         }
         return false;
