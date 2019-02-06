@@ -135,7 +135,7 @@ public class TextRenderer implements DominoGameRenderer {
         bottomR = topEdge.toString();
 
 
-        System.out.println("_____________________BOARD___________________");
+        System.out.println("\n\n\n\n_____________________BOARD___________________");
         System.out.println(topR);
         System.out.println(bottomR);
 

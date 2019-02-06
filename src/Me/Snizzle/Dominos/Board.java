@@ -82,7 +82,7 @@ public class Board {
     }
 
     //this checks the validity of a requested move...I could break this out into more private methods...but I dont want to
-    //TODO need to add checks for the wild card of 0
+
     public boolean checkValid(Side side , Row row, Domino piece){
         //lets take care of the edge cases first
         if(topRow.isEmpty() && bottomRow.isEmpty()){

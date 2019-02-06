@@ -99,7 +99,6 @@ public class Player {
         //load piece to a local variable (locality principle can increase performance not by much though)
         piece = hand.remove(handI);
 
-        System.out.println(board.checkValid(side,row,piece));
         //add piece to the board if it is a legal move
         if(!board.add(side,row,piece)){
             hand.add(piece);
@@ -109,10 +108,76 @@ public class Player {
     }
 
     /**
-     * if the player happens to be a computer
-     * @return true
+     * if the player happens to be a computer this method can run.
+     * @return true if the move is successful and false
+     * if the computer lost by drawing  from the empty boneyard
      */
     public boolean playCompHand(){
+        //lets first set up the logic of when the computer has empty hand
+        if(hand.isEmpty()){
+            //if the boneyard is also empty return false
+            if(!drawFromBoneyard()){return false;}
+        }
+
+
+        //loop over every domino and play first valid move(really dumb computer.)
+        for (int i = 0; i< hand.size();i++) {
+            if(checkAndAdd(i)){return true;}
+        }
+        //if there are no valid moves then draw and until the boneyard is empty and play the first valid move.
+        while(drawFromBoneyard()){
+            int i = (hand.size()-1);
+            //check the new piece
+            if(checkAndAdd(i)){return true;}
+        }
+        //if we have exuasted the entire boneyard without playing a move than return false
+        return false;
+    }
+
+    /**
+     * this private method will take an index into the player hand  and check to see if that
+     * piece can be played anywhere on the board
+     * @param index
+     * @return
+     */
+    private boolean checkAndAdd(int index){
+        Domino piece = hand.get(index);
+        if(board.checkValid(Board.Side.LEFT, Board.Row.TOP,piece)){
+            board.add(Board.Side.LEFT, Board.Row.TOP,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.LEFT, Board.Row.BOTTOM,piece)){
+            board.add(Board.Side.LEFT, Board.Row.BOTTOM,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.RIGHT, Board.Row.TOP,piece)){
+            board.add(Board.Side.RIGHT, Board.Row.TOP,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.RIGHT, Board.Row.BOTTOM,piece)){
+            board.add(Board.Side.RIGHT, Board.Row.BOTTOM,hand.remove(index));
+            return true;
+        }
+
+        //rotate the piece and check again
+        hand.rotate(index);
+        piece = hand.get(index);
+        if(board.checkValid(Board.Side.LEFT, Board.Row.TOP,piece)){
+            board.add(Board.Side.LEFT, Board.Row.TOP,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.LEFT, Board.Row.BOTTOM,piece)){
+            board.add(Board.Side.LEFT, Board.Row.BOTTOM,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.RIGHT, Board.Row.TOP,piece)){
+            board.add(Board.Side.RIGHT, Board.Row.TOP,hand.remove(index));
+            return true;
+        }
+        if(board.checkValid(Board.Side.RIGHT, Board.Row.BOTTOM,piece)){
+            board.add(Board.Side.RIGHT, Board.Row.BOTTOM,hand.remove(index));
+            return true;
+        }
         return false;
     }
 }
