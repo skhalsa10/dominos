@@ -46,6 +46,7 @@ public class DominoGame  implements Logic{
      * or a gui
      */
     public interface Importer {
+        boolean timeToFetchData();
         String[] fetchData();
     }
 
@@ -66,22 +67,25 @@ public class DominoGame  implements Logic{
     @Override
     public void step() {
 
-        if(isUserTurn){
-            //lets import the user move
-            String[] move = importer.fetchData();
-            //if the user draws from the boneyard and it is empty then they lose
-            if(move.length == 1 && move[0].equals("draw")){
-                if(!user.drawFromBoneyard()){
-                    isGameOver = true;
-                }
-                return;
-            }
 
-            //if user move is valid end turn
-            if(user.playHand(move)){
-                isUserTurn = false;
+        if (isUserTurn) {
+            if(importer.timeToFetchData()) {
+                //lets import the user move
+                String[] move = importer.fetchData();
+                //if the user draws from the boneyard and it is empty then they lose
+                if (move.length == 1 && move[0].equals("draw")) {
+                    if (!user.drawFromBoneyard()) {
+                        isGameOver = true;
+                    }
+                    return;
+                }
+
+                //if user move is valid end turn
+                if (user.playHand(move)) {
+                    isUserTurn = false;
+                }
             }
-        }else{
+        } else if (!isUserTurn){
             isUserTurn = true;
             //we are now in the computers move
             isGameOver = !(computer.playCompHand());

@@ -165,6 +165,11 @@ public class TextRenderer implements DominoGameRenderer {
 
     }
 
+    @Override
+    public boolean timeToFetchData() {
+        return true;
+    }
+
     /**
      * this method is somewhat messy. I am probably not the best at parsing text but whatever.
      * the purpose of this method is to collect the move from the user.
