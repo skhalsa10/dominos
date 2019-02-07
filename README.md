@@ -1,34 +1,60 @@
 # Project: NAME OF PROJECT
-## Student(s):  Name(s)
+## Student(s):  Siri Khalsa
 
 ## Introduction
-Generally describe the project/problem you are solving.
+This is a basic simple Domino game. there is a Text based version and a GUI based version.
 
 ## Contributions
-If this is a group project then detail which group member worked on what aspect(s) of the project.
+There is only one person in this project.
 
 ## Usage
-Give details about how to use the program. (Imagine making it easy for someone that you don't know to run and use your project.)
+####TEXT-version1 
+For the text based version you will see your hand and the current state of the play board.
+The hand  will also print the index of each domino. You will use this when you make a move.
+The moves can consist of the following:
+
+[draw]
+or
+[index] [top|bottom] [left|right] [rotate (optional)]
+EXAMPLE: 5 top left rotate
+
+if you need to draw a domino from the boneyard type in draw and press enter. if you want to play 
+the the domino with index 2 and play it on the top row on the right side of the board you would type:
+
+2 top right 
+
+if you want to rotate the piece before you play it then just add rotate to the end of the command before you press enter:
+
+2 top right rotate
+ 
+
 
 ## Project Assumptions
-This section is where you put any clarifications about your project & how it works concerning any vagueness in the specification documents.
+This project uses JDK 10 (Oracle version)
 
 ## Versions 
-Where are the .jar files?
-### V1
-explain about how version 1 works
+
+###Text based version
+this jar is located in the root of the project. the name is: cs351project2-Dominos_Text_skhalsa10.jar
+please see usage above for how to play the game. to run the game please type:
+
+###### java -jar cs351project2-Dominos_Text_skhalsa10.jar
+
 ### V2
 explain about how version 2 works etc...
 
 ## Docs
-What folder is your documentation (diagram and class diagram) in?
+/Doc/
 
 ## Status
 ### Implemented Features
-State things that work.
+this game both versions will allow you to draw from the boneyard even if you have a move. 
+
+TEXT version - is fully functional as far as I am concerned. 
 
 ### Known Issues
-If there are things that don't work put them here. It will save the graders time and keep them in a good mood.
+
+TEXT version - no none issues as far as I am concerned currently. I am sure there are bugs somewhere though.
 
 ## Testing and Debugging
 If you have tests, then explain how they work and how to use them.
