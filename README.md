@@ -41,7 +41,10 @@ please see usage above for how to play the game. to run the game please type:
 ###### java -jar cs351project2-Dominos_Text_skhalsa10.jar
 
 ### V2
-explain about how version 2 works etc...
+This jar is located in the root of the project folder. the name is: cs351project2_Dominos_JFX_skhalsa10.jar
+please see usage above for how to play the gui game. to run this game please type:
+ 
+###### java -jar cs351project2_Dominos_JFX_skhalsa10.jar
 
 ## Docs
 /Doc/
@@ -52,9 +55,13 @@ this game both versions will allow you to draw from the boneyard even if you hav
 
 TEXT version - is fully functional as far as I am concerned. 
 
+GUI version - this is fully fuctional version of the basic Domino game with a gui inteface 
+
 ### Known Issues
 
 TEXT version - no none issues as far as I am concerned currently. I am sure there are bugs somewhere though.
+GUI version - This system does not really control the input very well it will allow you to submit bad turns which are handled through exceptions 
+exceptions so the game doesnt crash and it keeps working... but still.
 
 ## Testing and Debugging
 If you have tests, then explain how they work and how to use them.

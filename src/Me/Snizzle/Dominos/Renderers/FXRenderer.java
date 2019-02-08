@@ -39,11 +39,16 @@ public class FXRenderer implements DominoGameRenderer {
     //JAVAFX related stuff
     private Stage primaryStage;
     private Scene scene;
-    private BorderPane root;
+    private VBox root;
     private VBox handAndControls;
     private HBox hand;
+    private GraphicsContext hrcGC;
     private HBox controls;
     private Button draw, rotate, finish;
+    //board related
+    private Pane boardContainer;
+    private HBox board;
+    private GraphicsContext brcGC;
     private int handPixelWidth;
     private int boardPixelWidth;
 
@@ -52,13 +57,15 @@ public class FXRenderer implements DominoGameRenderer {
      * @param primaryStage this is the javafx stage to rendor the game to
      */
     public FXRenderer(Stage primaryStage){
+        //initialize anything
         topLeftExtends = false;
         sendRotate = false;
         sendDraw = false;
         turnComplete = false;
+        index = -1;
         //lets set up the stage, scene and root pane
         this.primaryStage = primaryStage;
-        root = new BorderPane();
+        root = new VBox();
         scene = new Scene(root);
 
         //lets set up the control buttons
@@ -87,9 +94,28 @@ public class FXRenderer implements DominoGameRenderer {
             }
         });
 
-        //initialize stuff
-        //add buttons to the controlbox
+
+        //add buttons to the controlbox and the hand representation
+        //hand
         hand = new HBox();
+        hand.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                int margin = (int)(hand.getWidth()-(userHand.length*HALFDOMINOWIDTH*2))/2;
+
+                index = (int)((event.getX()-margin)/100);
+                //if this is the first selected piece then end turn immediately
+                if(topRow.length == 0 && bottomRow.length == 0) {
+                    row = "top";
+                    side = "right";
+                    turnComplete = true;
+                }
+
+            }
+        });
+
+        //control buttons
         Pane ctrlLSpacer = new Pane();
         ctrlLSpacer.setMinSize(5,1);
         Pane ctrlRSpacer = new Pane();
@@ -99,12 +125,32 @@ public class FXRenderer implements DominoGameRenderer {
         controls.setPadding(new Insets(20));
         controls.setAlignment(Pos.CENTER);
         hand.setAlignment(Pos.CENTER);
-        handAndControls = new VBox(hand, controls);
 
-        handAndControls.setAlignment(Pos.CENTER);
-        root.setBottom(handAndControls);
+        board = new HBox();
+        board.setPadding(new Insets(20));
+        board.setAlignment(Pos.CENTER);
+        board.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //set side
+                if(event.getX()>(board.getWidth()/2)){
+                    side = "right";
+                }else{
+                    side = "left";
+                }
+                //set row
+                if(event.getY() > (board.getHeight()/2)){
+                    row = "bottom";
+                }else{
+                    row = "top";
+                }
+                System.out.println("side: " +side);
+                System.out.println("row: " + row);
+            }
+        });
 
-
+        //add board hand and controls to the root
+        root.getChildren().addAll(board,hand,controls);
 
 
         primaryStage.setScene(scene);
@@ -141,12 +187,85 @@ public class FXRenderer implements DominoGameRenderer {
     public void render() {
         renderUserHand();
         renderBoard();
+        setStageSize();
 
     }
 
+    /**
+     * this sets the stage size to the smallest it can be to display all data
+     */
+    private void setStageSize() {
+        //set the primary stage size
+        if(handPixelWidth> boardPixelWidth) {
+            primaryStage.setMinWidth(handPixelWidth + 20);
+        }else{
+            primaryStage.setMinWidth(boardPixelWidth + 20);
+        }
+        primaryStage.setMinHeight(290);
+        //primaryStage.setMinHeight(board.getHeight()+hand.getHeight()+controls.getHeight());
+    }
+
+    /**
+     * this goes through the board and renders it on the screen
+     */
     private void renderBoard() {
+        board.getChildren().clear();
+        Pane boardLSpacer = new Pane();
+        boardLSpacer.setMinSize(10,1);
+        Pane boardRSpacer = new Pane();
+        boardRSpacer.setMinSize(10,1);
+        //board setup
+        Pane boardRendorPane = new Pane();
+        Canvas boardRendorCanvas = new Canvas();
+        boardRendorPane.getChildren().add(boardRendorCanvas);
+        brcGC = boardRendorCanvas.getGraphicsContext2D();
+        //add the panes to the board
+        board.getChildren().addAll(boardLSpacer,boardRendorPane,boardRSpacer);
+
+        //set size of board canvas - do i need to check i think the rows are always the same size
+        if(topRow.length > bottomRow.length) {
+            boardPixelWidth = topRow.length*(HALFDOMINOWIDTH*2);
+        }else{
+            boardPixelWidth = bottomRow.length*(HALFDOMINOWIDTH*2);
+        }
+        //set size
+        boardPixelWidth += HALFDOMINOWIDTH;
+        boardRendorCanvas.setWidth(boardPixelWidth);
+        boardRendorCanvas.setHeight(HALFDOMINOHEIGHT*2);
+
+        //now render the first row
+        int x = 0;
+        int y = 0;
+        if(!topLeftExtends){x = HALFDOMINOWIDTH;}
+        for (Domino piece:topRow) {
+            brcGC.setFill(Color.DARKGRAY);
+            brcGC.fillRoundRect(x,y,(2*HALFDOMINOWIDTH),HALFDOMINOHEIGHT,10,10);
+            brcGC.setStroke(Color.BLACK);
+            brcGC.setLineWidth(3);
+            brcGC.strokeLine(x+HALFDOMINOWIDTH,y+5,x+HALFDOMINOWIDTH,HALFDOMINOHEIGHT-5);
+            rendorDominoPiece(piece, x,y, brcGC);
+            x += HALFDOMINOWIDTH*2;
+
+        }
+        //second row
+        x = 0;
+        y = HALFDOMINOHEIGHT;
+        if(topLeftExtends){x = HALFDOMINOWIDTH;}
+        for (Domino piece:bottomRow) {
+            brcGC.setFill(Color.DARKGRAY);
+            brcGC.fillRoundRect(x,y,(2*HALFDOMINOWIDTH),HALFDOMINOHEIGHT,10,10);
+            brcGC.setStroke(Color.BLACK);
+            brcGC.setLineWidth(3);
+            brcGC.strokeLine(x+HALFDOMINOWIDTH,y+5,x+HALFDOMINOWIDTH,y+HALFDOMINOHEIGHT-5);
+            rendorDominoPiece(piece, x,y, brcGC);
+            x += HALFDOMINOWIDTH*2;
+        }
+
     }
 
+    /**
+     * this rendors the userhand
+     */
     private void renderUserHand() {
         hand.getChildren().clear();
         Pane handLSpacer = new Pane();
@@ -156,67 +275,112 @@ public class FXRenderer implements DominoGameRenderer {
         Pane handRendorPane = new Pane();
         Canvas handRendorCanvas = new Canvas();
         handRendorPane.getChildren().add(handRendorCanvas);
-        GraphicsContext hrcGC = handRendorCanvas.getGraphicsContext2D();
+        hrcGC = handRendorCanvas.getGraphicsContext2D();
         hand.getChildren().addAll(handLSpacer,handRendorPane, handRSpacer);
 
-        //this will calculate the index of the drawn dominos
-        hand.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                System.out.println(primaryStage.getWidth());
-                System.out.println(event.getX());
-            }
-        });
-
-        //first calculate the size of the canvas and set the max of the stage
+        //set size of handRendorCanvas
         handPixelWidth = userHand.length *(2*HALFDOMINOWIDTH);
         handRendorCanvas.setWidth(handPixelWidth);
         handRendorCanvas.setHeight(HALFDOMINOHEIGHT);
-        primaryStage.setMinWidth(handPixelWidth+20);
-        primaryStage.setMinHeight(500);
 
-        hrcGC.setFill(Color.DARKGRAY);
 
+        //render the pieces.
         int x = 0;
         for (Domino piece: userHand) {
+            hrcGC.setFill(Color.DARKGRAY);
             hrcGC.fillRoundRect(x,0,(2*HALFDOMINOWIDTH),HALFDOMINOHEIGHT,10,10);
             hrcGC.setStroke(Color.BLACK);
             hrcGC.setLineWidth(3);
             hrcGC.strokeLine(x+HALFDOMINOWIDTH,5,x+HALFDOMINOWIDTH,HALFDOMINOHEIGHT-5);
+            rendorDominoPiece(piece, x,0, hrcGC);
             x += HALFDOMINOWIDTH*2;
         }
 
     }
 
-    private HBox rendorPiece(Domino piece) {
-        HBox renderedPiece = new HBox();
-        //leftside of piece
-        Canvas left = new Canvas();
-        left.setWidth(HALFDOMINOWIDTH);
-        left.setHeight(HALFDOMINOHEIGHT);
-        GraphicsContext leftGC = left.getGraphicsContext2D();
-        leftGC.setFill(Color.DARKSALMON);
-        leftGC.fillRoundRect(0,0,(double)HALFDOMINOWIDTH,(double)HALFDOMINOHEIGHT,20,5 );
-        renderedPiece.getChildren().add(left);
-        renderedPiece.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+    /**
+     * draws a domono piece at given x inside of the graphicsContext gc
+     * @param piece
+     * @param x
+     * @param gc
+     */
+    private void rendorDominoPiece(Domino piece, int x, int y, GraphicsContext gc) {
 
-                //System.out.println(event.);
-            }
-        });
+        renderNumber(piece.checkLeft(), x, y, gc);
+        renderNumber(piece.checkRight(), x+HALFDOMINOWIDTH, y, gc);
 
-        //right side
-        /*Canvas right = new Canvas();
-        right.setWidth(HALFDOMINOWIDTH);
-        right.setHeight(HALFDOMINOHEIGHT);
-        GraphicsContext rightGC = left.getGraphicsContext2D();
-        rightGC.setFill(Color.DARKGRAY);
-        rightGC.fillRoundRect(0,0,(double)HALFDOMINOWIDTH,(double)HALFDOMINOHEIGHT,5,5 );
-        renderedPiece.getChildren().add(right);*/
+    }
 
-        return renderedPiece;
+    /**
+     * render the numbers assuming x is the left side of a half domino.
+     * @param num the number to render
+     * @param x the left side of the half domino
+     * @param gc the graphics context to draw to.
+     */
+    private void renderNumber(int num, double x, double y, GraphicsContext gc){
+        gc.setFill(Color.BLACK);
+        double circleSize = 5;
+        switch(num){
+            case 0:
+                break;
+            case 1:
+                //middle
+                gc.fillOval(x+((HALFDOMINOWIDTH/2)-(circleSize/2)),y+((HALFDOMINOHEIGHT/2)-(circleSize/2)),circleSize,circleSize);
+                break;
+            case 2:
+                //upper left
+                gc.fillOval(x+8, y+8, circleSize,circleSize);
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+((HALFDOMINOHEIGHT-circleSize-8)), circleSize,circleSize);
+                //lower right
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+((HALFDOMINOHEIGHT-circleSize-8)), circleSize,circleSize);
+                break;
+            case 3:
+                //upper left
+                gc.fillOval(x+8, y+8, circleSize,circleSize);
+                //middle
+                gc.fillOval(x+((HALFDOMINOWIDTH/2)-(circleSize/2)),y+((HALFDOMINOHEIGHT/2)-(circleSize/2)),circleSize,circleSize);
+                //lower right
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+(HALFDOMINOHEIGHT-circleSize-8), circleSize,circleSize);
+                break;
+            case 4:
+                //upper left
+                gc.fillOval(x+8, y+8, circleSize,circleSize);
+                //upper right
+                gc.fillOval(x+(HALFDOMINOWIDTH-circleSize-8),y+8,circleSize,circleSize);
+                //lower left
+                gc.fillOval(x+8, y+(HALFDOMINOHEIGHT-circleSize-8),circleSize,circleSize);
+                //lower right
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+(HALFDOMINOHEIGHT-circleSize-8), circleSize,circleSize);
+                break;
+            case 5:
+                //upper left
+                gc.fillOval(x+8, y+8, circleSize,circleSize);
+                //upper right
+                gc.fillOval(x+(HALFDOMINOWIDTH-circleSize-8),y+8,circleSize,circleSize);
+                //lower left
+                gc.fillOval(x+8, y+(HALFDOMINOHEIGHT-circleSize-8),circleSize,circleSize);
+                //lower right
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+(HALFDOMINOHEIGHT-circleSize-8), circleSize,circleSize);
+                //middle
+                gc.fillOval(x+((HALFDOMINOWIDTH/2)-(circleSize/2)),y+((HALFDOMINOHEIGHT/2)-(circleSize/2)),circleSize,circleSize);
+                break;
+            case 6:
+                //upper left
+                gc.fillOval(x+8, y+8, circleSize,circleSize);
+                //upper middle
+                gc.fillOval(x+((HALFDOMINOWIDTH/2)-(circleSize/2)),y+8,circleSize,circleSize);
+                //upper right
+                gc.fillOval(x+(HALFDOMINOWIDTH-circleSize-8),y+8,circleSize,circleSize);
+                //lower left
+                gc.fillOval(x+8, y+(HALFDOMINOHEIGHT-circleSize-8),circleSize,circleSize);
+                //lower middle
+                gc.fillOval(x+((HALFDOMINOWIDTH/2)-(circleSize/2)),y+(HALFDOMINOHEIGHT-circleSize-8),circleSize,circleSize);
+                //lower right
+                gc.fillOval(x+((HALFDOMINOWIDTH-circleSize)-8), y+(HALFDOMINOHEIGHT-circleSize-8), circleSize,circleSize);
+                break;
+
+
+        }
 
     }
 
@@ -243,6 +407,12 @@ public class FXRenderer implements DominoGameRenderer {
     }
 
 
+    /**
+     * this method will let the gamelogic know if it is ready to return data. this will
+     * allow the thread that is drawing the screen to get the thread back. dont worry the thread will come back and
+     * check if we are ready yet so we can take our time picking our move.
+     * @return
+     */
     @Override
     public boolean timeToFetchData() {
         if (turnComplete){
@@ -259,19 +429,31 @@ public class FXRenderer implements DominoGameRenderer {
      */
     @Override
     public String[] fetchData() {
+        String[] out;
 
 
         turnComplete = false;
         if(sendDraw){
             sendDraw = false;
+            index = -1;
+            row = null;
+            side = null;
             return new String[]{"draw"};
         }
         if(sendRotate){
+            out = new String[]{Integer.toString(index), row, side, "rotate"};
             sendRotate = false;
-            return new String[]{Integer.toString(index), row, side, "rotate"};
+            index = -1;
+            row = null;
+            side = null;
+            return out;
         }
-
-        return new String[]{Integer.toString(index), row, side};
+        out = new String[]{Integer.toString(index), row, side};
+        System.out.println(index+", "+ row+", " + side);
+        index = -1;
+        row = null;
+        side = null;
+        return out;
         //return new String[]{};
     }
 }
