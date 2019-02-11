@@ -1,6 +1,11 @@
 package Me.Snizzle.Dominos;
 
-
+/**
+ * This class represents a Domino
+ *
+ * @author Siri Khalsa
+ * @version 2/10/19
+ */
 public class Domino {
     private int left;
     private int right;

@@ -1,7 +1,6 @@
 package Me.Snizzle.Dominos.Renderers;
 
 import Me.Snizzle.Dominos.Domino;
-import Me.Snizzle.Dominos.Hand;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +11,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,7 +18,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-
+/**
+ * this class renders the dominoGame with a gui.
+ * this is pretty lengthy and complexly confusing
+ * @author Siri Khalsa
+ * @version 2/10/19
+ */
 public class FXRenderer implements DominoGameRenderer {
     //size of a half domino used for rendering
     private final int HALFDOMINOWIDTH = 50;
@@ -41,14 +44,12 @@ public class FXRenderer implements DominoGameRenderer {
     private Stage primaryStage;
     private Scene scene;
     private VBox root;
-    private VBox handAndControls;
     private HBox hand;
     private GraphicsContext hrcGC;
     private HBox controls;
     private Label moveInfo;
     private Button draw, rotate, finish;
     //board related
-    private Pane boardContainer;
     private HBox board;
     private GraphicsContext brcGC;
     private int handPixelWidth;

@@ -2,6 +2,13 @@ package Me.Snizzle.Dominos;
 
 import java.util.*;
 
+/**
+ * This class represents a boneyard for the DominoGame
+ *
+ * @author Siri Khalsa
+ * @version 2/10/19
+ *
+ */
 public class Boneyard {
     //collection that stores the dominos can be a list ... All i need to do is pull of the end.
     LinkedList<Domino> boneyard;

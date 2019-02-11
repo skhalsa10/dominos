@@ -1,5 +1,12 @@
 package Me.Snizzle.Dominos;
 
+/**
+ * this is the main Domino game logic.
+ * It contains everything needed to keep the state of the game as the state machine changes
+ *
+ * @author Siri Khalsa
+ * @version 2/10/19
+ */
 public class DominoGame  implements Logic{
 
     private boolean isGameOver;
