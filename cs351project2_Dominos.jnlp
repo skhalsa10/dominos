@@ -9,7 +9,8 @@
     <resources>
         <j2se version="10.0.2+" href="http://java.sun.com/products/autodl/j2se"/>
         <jar href="cs351project2-Dominos_Text_skhalsa10.jar" size="28725" download="eager"/>
-        <jar href="cs351project2_Dominos.jar" size="99902" download="eager"/>
+        <jar href="cs351project2_Dominos.jar" size="238474" download="eager"/>
+        <jar href="cs351project2_Dominos_JFX_skhalsa10.jar" size="99902" download="eager"/>
     </resources>
     <jfx:javafx-desc width="600" height="400" main-class="Me.Snizzle.Dominos.GUIMain" name="GUIMain"/>
 </jnlp>

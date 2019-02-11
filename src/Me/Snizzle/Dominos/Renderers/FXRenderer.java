@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -44,6 +45,7 @@ public class FXRenderer implements DominoGameRenderer {
     private HBox hand;
     private GraphicsContext hrcGC;
     private HBox controls;
+    private Label moveInfo;
     private Button draw, rotate, finish;
     //board related
     private Pane boardContainer;
@@ -112,6 +114,8 @@ public class FXRenderer implements DominoGameRenderer {
                     turnComplete = true;
                 }
 
+                updateMInfo();
+
             }
         });
 
@@ -120,7 +124,8 @@ public class FXRenderer implements DominoGameRenderer {
         ctrlLSpacer.setMinSize(5,1);
         Pane ctrlRSpacer = new Pane();
         ctrlRSpacer.setMinSize(5,1);
-        controls = new HBox(ctrlLSpacer, draw, rotate, finish, ctrlRSpacer);
+        moveInfo = new Label("" + Integer.toString(index) + " - " + row + " - " + side + " rotate: " + sendRotate);
+        controls = new HBox(ctrlLSpacer, draw, rotate, finish, moveInfo, ctrlRSpacer);
         controls.setSpacing(10);
         controls.setPadding(new Insets(20));
         controls.setAlignment(Pos.CENTER);
@@ -144,9 +149,8 @@ public class FXRenderer implements DominoGameRenderer {
                 }else{
                     row = "top";
                 }
-                System.out.println("side: " +side);
-                System.out.println("row: " + row);
-            }
+
+                updateMInfo();            }
         });
 
         //add board hand and controls to the root
@@ -154,6 +158,11 @@ public class FXRenderer implements DominoGameRenderer {
 
 
         primaryStage.setScene(scene);
+    }
+
+    private void updateMInfo() {
+        moveInfo.setText("" + Integer.toString(index) + " - " + row + " - " + side + " rotate: " + sendRotate);
+
     }
 
     /**
@@ -167,7 +176,12 @@ public class FXRenderer implements DominoGameRenderer {
      * sets the rotate switch to on
      */
     private void setRotate() {
-        sendRotate = true;
+        if(sendRotate){
+            sendRotate = false;
+        }else {
+            sendRotate = true;
+        }
+        updateMInfo();
     }
 
     /**
@@ -188,6 +202,7 @@ public class FXRenderer implements DominoGameRenderer {
         renderUserHand();
         renderBoard();
         setStageSize();
+        updateMInfo();
 
     }
 

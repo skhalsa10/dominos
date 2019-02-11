@@ -42,6 +42,7 @@ If you click the screen where you want to play your piece it will convert it to 
 
 Quickly you can: click the piece, click the spot on the board you want to play, press finish to play without rotating or press rotate before you press finsih. 
 
+UPDATE - I added a label the shows the current state of the move so it can be confirmed before the finish button is pressed.
 
 ## Project Assumptions
 This project uses JDK 10 (Oracle version)
