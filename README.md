@@ -77,6 +77,7 @@ GUI version - this is fully fuctional version of the basic Domino game with a gu
 TEXT version - no none issues as far as I am concerned currently. I am sure there are bugs somewhere though.
 GUI version - This system does not really control the input very well it will allow you to submit bad turns which are handled through exceptions 
 exceptions so the game doesnt crash and it keeps working... but still.
+Also in the GUI it is not successfully ending the game when appropriate.
 
 BOTH VERSIONS - the logic allows a draw from the boneyard even if there is a move that can be played. this allows the player to draw the entire boneyard.
 the chances are that the computer will always lose as they will run out of pieces first or need to draw first. and thus draw from an empty boneyard.
