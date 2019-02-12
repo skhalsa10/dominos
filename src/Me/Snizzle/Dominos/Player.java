@@ -1,5 +1,8 @@
 package Me.Snizzle.Dominos;
 
+/**
+ * this class defines a player  its behavior and its state for use with our basic domino game
+ */
 public class Player {
     private Hand hand;
     private Boneyard boneyard;

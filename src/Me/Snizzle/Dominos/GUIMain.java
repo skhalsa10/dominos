@@ -4,7 +4,9 @@ import Me.Snizzle.Dominos.Renderers.FXRenderer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
+/**
+ * main entry for the gui version
+ */
 public class GUIMain extends Application {
 
     @Override
